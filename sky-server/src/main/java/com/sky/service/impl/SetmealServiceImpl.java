@@ -1,17 +1,22 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.sky.dto.SetmealDTO;
+import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
+import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.service.SetmealService;
+import com.sky.vo.SetmealVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.github.pagehelper.Page;
 
 import java.util.List;
 
@@ -47,6 +52,24 @@ public class SetmealServiceImpl implements SetmealService {
         }
         //保存套餐和菜品的关联关系
         setmealDishMapper.insertBatch(setmealDishes);
+    }
 
+    /**
+     * 分页查询
+     * @param setmealPageQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult pageQuery(SetmealPageQueryDTO setmealPageQueryDTO) {
+        // 1. 从 DTO 中提取分页参数
+        int pageNum = setmealPageQueryDTO.getPage();
+        int pageSize = setmealPageQueryDTO.getPageSize();
+
+        // 2. 核心：开启 PageHelper 分页拦截
+        PageHelper.startPage(pageNum, pageSize);
+        // 3. 执行 Mapper 查询（此时 SQL 会被自动改造）
+        Page<SetmealVO> page = setmealMapper.pageQuery(setmealPageQueryDTO);
+        // 4. 封装并返回统一结果
+        return new PageResult(page.getTotal(), page.getResult());
     }
 }
