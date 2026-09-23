@@ -99,4 +99,6 @@ public class DishController {
         List<Dish> dishList = dishService.list(categoryId);
         return Result.success(dishList);
     }
+
+
 }
