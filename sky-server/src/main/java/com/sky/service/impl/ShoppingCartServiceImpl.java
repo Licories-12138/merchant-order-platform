@@ -67,4 +67,56 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             shoppingCartMapper.insert(shoppingCart);
         }
     }
+
+    /**
+     * 查看购物车
+     * @return 购物车列表
+     */
+    @Override
+    public List<ShoppingCart> showShoppingCart() {
+        return shoppingCartMapper.list(ShoppingCart.
+                builder()
+                .userId(BaseContext.getCurrentId())
+                .build());
+    }
+
+    /**
+     * 清空购物车
+     */
+    @Override
+    public void cleanShoppingCart() {
+        shoppingCartMapper.deleteByUserId(BaseContext.getCurrentId());
+    }
+
+    /**
+     * 减少购物车商品
+     * @param shoppingCartDTO
+     */
+    @Override
+    public void subShoppingCart(ShoppingCartDTO shoppingCartDTO) {
+        // 1. 构建查询条件：当前用户 + 菜品/套餐信息
+        ShoppingCart shoppingCart = ShoppingCart.builder()
+                .userId(BaseContext.getCurrentId())
+                .dishId(shoppingCartDTO.getDishId())
+                .setmealId(shoppingCartDTO.getSetmealId())
+                .dishFlavor(shoppingCartDTO.getDishFlavor())
+                .build();
+
+        // 2. 查询当前用户的这条购物车记录
+        List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
+
+        // 3. 判空：如果查不到记录，直接返回，避免空指针
+        if (list != null && !list.isEmpty()) {
+            ShoppingCart cart = list.get(0);
+            // 4. 判断数量
+            if (cart.getNumber() > 1) {
+                // 数量大于 1，数量减一，并更新数据库
+                cart.setNumber(cart.getNumber() - 1);
+                shoppingCartMapper.updateNumberById(cart);
+            } else {
+                // 数量等于 1，直接删除这条购物车记录
+                shoppingCartMapper.deleteById(cart.getId());
+            }
+        }
+    }
 }

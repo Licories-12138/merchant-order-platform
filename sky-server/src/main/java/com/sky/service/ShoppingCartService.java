@@ -1,11 +1,31 @@
 package com.sky.service;
 
 import com.sky.dto.ShoppingCartDTO;
+import com.sky.entity.ShoppingCart;
+
+import java.util.List;
 
 public interface ShoppingCartService {
     /**
      * 添加购物车
-     * @param shoppingCartDTO
+     * @param shoppingCartDTO 购物车数据传输对象
      */
     void addShoppingCart(ShoppingCartDTO shoppingCartDTO);
+
+    /**
+     * 显示购物车
+     * @return 购物车列表
+     */
+    List<ShoppingCart> showShoppingCart();
+
+    /**
+     * 清空购物车
+     */
+    void cleanShoppingCart();
+
+    /**
+     * 减少1个购物车商品
+     * @param shoppingCartDTO
+     */
+    void subShoppingCart(ShoppingCartDTO shoppingCartDTO);
 }
