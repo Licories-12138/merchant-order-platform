@@ -38,6 +38,12 @@ public class ShopController {
     @ApiOperation(value = "根据key获取店铺的营业状态", notes = "根据key获取店铺的营业状态")
     public Result<Integer> getStatus() {
         Integer status = (Integer) redisTemplate.opsForValue().get(KEY);
+        // 【核心修复】判空处理，防止自动拆箱引发 NullPointerException
+        if (status == null) {
+            status = 0; // 如果 Redis 中没有状态，默认设置为 0（打烊中）
+            // 可以选择顺手存入 Redis，避免下次再查为空
+            redisTemplate.opsForValue().set(KEY, status);
+        }
         log.info("获取店铺营业状态：{}", status == 1 ? "营业中" : "打烊中");
         return Result.success(status);
     }
