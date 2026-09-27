@@ -1,9 +1,7 @@
 package com.sky.controller.user;
 
-import com.sky.dto.OrdersCancelDTO;
 import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
-import com.sky.entity.OrderDetail;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.OrderService;
@@ -28,8 +26,8 @@ public class OrderController {
     /**
      * 用户下单
      *
-     * @param ordersSubmitDTO
-     * @return
+     * @param ordersSubmitDTO 订单提交信息
+     * @return 订单提交信息
      */
     @PostMapping("/submit")
     @ApiOperation(value = "用户下单", notes = "用户下单")
@@ -42,8 +40,8 @@ public class OrderController {
     /**
      * 订单支付
      *
-     * @param ordersPaymentDTO
-     * @return
+     * @param ordersPaymentDTO 订单支付信息
+     * @return 订单支付信息
      */
     @PutMapping("/payment")
     @ApiOperation("订单支付")
@@ -67,8 +65,8 @@ public class OrderController {
 
     /**
      * 查询订单详情
-     * @param id
-     * @return
+     * @param id 订单id
+      * @return 订单详情
      */
     @GetMapping("/orderDetail/{id}")
     @ApiOperation("查询订单详情")
@@ -81,7 +79,6 @@ public class OrderController {
     /**
      * 用户取消订单
      * @param id 订单id
-     * @return
      */
     @PutMapping("/cancel/{id}")
     @ApiOperation("用户取消订单")
