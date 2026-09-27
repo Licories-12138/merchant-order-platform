@@ -140,8 +140,7 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 支付成功，修改订单状态
-     *
-     * @param outTradeNo
+     * @param outTradeNo 订单号
      */
     public void paySuccess(String outTradeNo) {
         // 当前登录用户id
