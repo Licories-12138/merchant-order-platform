@@ -15,6 +15,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -43,11 +44,12 @@ public class WeChatPayUtil {
 
     @Autowired
     private WeChatProperties weChatProperties;
+    // 新增开关
+    @Value("${sky.wechat.enabled:false}")
+    private boolean wechatEnabled;
 
     /**
      * 获取调用微信接口的客户端工具对象
-     *
-     * @return
      */
     private CloseableHttpClient getClient() {
         PrivateKey merchantPrivateKey = null;
@@ -74,10 +76,8 @@ public class WeChatPayUtil {
 
     /**
      * 发送post方式请求
-     *
-     * @param url
-     * @param body
-     * @return
+     * @param url 请求地址
+     * @param body 请求体
      */
     private String post(String url, String body) throws Exception {
         CloseableHttpClient httpClient = getClient();
@@ -100,9 +100,7 @@ public class WeChatPayUtil {
 
     /**
      * 发送get方式请求
-     *
-     * @param url
-     * @return
+     * @param url 请求地址
      */
     private String get(String url) throws Exception {
         CloseableHttpClient httpClient = getClient();
@@ -129,7 +127,6 @@ public class WeChatPayUtil {
      * @param total       总金额
      * @param description 商品描述
      * @param openid      微信用户的openid
-     * @return
      */
     private String jsapi(String orderNum, BigDecimal total, String description, String openid) throws Exception {
         JSONObject jsonObject = new JSONObject();
@@ -161,7 +158,6 @@ public class WeChatPayUtil {
      * @param total       金额，单位 元
      * @param description 商品描述
      * @param openid      微信用户的openid
-     * @return
      */
     public JSONObject pay(String orderNum, BigDecimal total, String description, String openid) throws Exception {
         //统一下单，生成预支付交易单
@@ -212,9 +208,17 @@ public class WeChatPayUtil {
      * @param outRefundNo   商户退款单号
      * @param refund        退款金额
      * @param total         原订单金额
-     * @return
      */
     public String refund(String outTradeNo, String outRefundNo, BigDecimal refund, BigDecimal total) throws Exception {
+        // 本地未配置证书时，直接返回模拟成功，不调用真实微信接口
+        if (!wechatEnabled) {
+            JSONObject mock = new JSONObject();
+            mock.put("status", "SUCCESS");
+            mock.put("out_trade_no", outTradeNo);
+            mock.put("out_refund_no", outRefundNo);
+            System.out.println("【本地模拟】跳过微信退款：" + mock);
+            return mock.toJSONString();
+        }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("out_trade_no", outTradeNo);
         jsonObject.put("out_refund_no", outRefundNo);

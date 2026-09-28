@@ -61,7 +61,7 @@ public class OrderController {
      * 接单
      * @param ordersConfirmDTO 订单接单DTO
      */
-    @GetMapping("/confirm")
+    @PutMapping("/confirm")
     @ApiOperation("接单")
     public Result<?> confirm(@RequestBody OrdersConfirmDTO ordersConfirmDTO) {
         orderService.confirm(ordersConfirmDTO);

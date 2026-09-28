@@ -60,6 +60,7 @@ sky:
     wechat-pay-cert-file-path: ${sky.wechat.wechat-pay-cert-file-path}
     notify-url: ${sky.wechat.notify-url}
     refund-notify-url: ${sky.wechat.refund-notify-url}
+    enabled: false   # 本地无证书，关闭真实微信支付
   shop:
     address: ${sky.shop.address}
   baidu:
