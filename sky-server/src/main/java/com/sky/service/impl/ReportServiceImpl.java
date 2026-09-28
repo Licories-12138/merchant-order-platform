@@ -1,7 +1,9 @@
 package com.sky.service.impl;
 
+import com.sky.dto.GoodsSalesDTO;
 import com.sky.mapper.UserMapper;
 import com.sky.vo.OrderReportVO;
+import com.sky.vo.SalesTop10ReportVO;
 import com.sky.vo.UserReportVO;
 import org.apache.commons.lang3.StringUtils;
 import com.sky.entity.Orders;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ReportServiceImpl implements ReportService{
@@ -178,5 +181,29 @@ public class ReportServiceImpl implements ReportService{
         map.put("begin",beginTime);
         map.put("end", endTime);
         return orderMapper.countByMap(map);
+    }
+
+    /**
+     * 销量排名数据统计
+     * @param begin 开始时间
+     * @param end 结束时间
+     * @return 销量排名数据
+     */
+    @Override
+    public SalesTop10ReportVO getSalesTop10(LocalDate begin, LocalDate end) {
+        // 确保 SQL 查询时，包含开始当天的所有订单，也包含结束当天的所有订单，不遗漏任何毫秒级数据
+        LocalDateTime beginTime = LocalDateTime.of(begin, LocalTime.MIN);
+        LocalDateTime endTime = LocalDateTime.of(end, LocalTime.MAX);
+        // 查询数据库
+        List<GoodsSalesDTO> goodsSalesDTOList = orderMapper.getSalesTop10(beginTime, endTime);
+
+        // 数据提取与字符串拼接
+        String nameList = StringUtils.join(goodsSalesDTOList.stream().map(GoodsSalesDTO::getName).collect(Collectors.toList()),",");
+        String numberList = StringUtils.join(goodsSalesDTOList.stream().map(GoodsSalesDTO::getNumber).collect(Collectors.toList()),",");
+
+        return SalesTop10ReportVO.builder()
+                .nameList(nameList)
+                .numberList(numberList)
+                .build();
     }
 }
