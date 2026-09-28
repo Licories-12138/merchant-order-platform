@@ -52,4 +52,19 @@ public class ReportController {
 
         return Result.success(reportService.getUserStatistics(begin,end));
     }
+
+    /**
+     * 订单数据统计
+     * @param begin 开始时间
+     * @param end 结束时间
+     * @return 订单数据
+     */
+    @GetMapping("/ordersStatistics")
+    @ApiOperation("订单数据统计")
+    public Result<?> orderStatistics(
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate begin,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end){
+
+        return Result.success(reportService.getOrderStatistics(begin,end));
+    }
 }

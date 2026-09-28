@@ -82,4 +82,21 @@
             </if>
         </where>
     </select>
+    <select id="countByMap" resultType="java.lang.Integer">
+        select count(id) from orders
+        <where>
+            <!--suppress XmlUnresolvedReference -->
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <!--suppress XmlUnresolvedReference -->
+            <if test="begin != null">
+                and order_time &gt;= #{begin}
+            </if>
+            <!--suppress XmlUnresolvedReference -->
+            <if test="end != null">
+                and order_time &lt;= #{end}
+            </if>
+        </where>
+    </select>
 </mapper>
