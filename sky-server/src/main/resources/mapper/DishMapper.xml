@@ -50,4 +50,13 @@
         </where>
         order by create_time desc
     </select>
+    <select id="countByMap" resultType="java.lang.Integer">
+        select count(id) from dish
+        <where>
+            <!--suppress XmlUnresolvedReference -->
+            <if test="status != null"> and status = #{status} </if>
+            <!--suppress XmlUnresolvedReference -->
+            <if test="categoryId != null"> and category_id = #{categoryId} </if>
+        </where>
+    </select>
 </mapper>

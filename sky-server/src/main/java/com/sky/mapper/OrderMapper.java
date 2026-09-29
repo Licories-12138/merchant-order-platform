@@ -75,9 +75,9 @@ public interface OrderMapper {
 
     /**
      * 根据动态条件查询订单
-     * @param beginTime 开始时间
-     * @param endTime 结束时间
+     * @param begin 开始时间
+     * @param end 结束时间
      * @return 订单列表
      */
-    List<GoodsSalesDTO> getSalesTop10(LocalDateTime beginTime, LocalDateTime endTime);
+    List<GoodsSalesDTO> getSalesTop10(LocalDateTime begin,LocalDateTime end);
 }
