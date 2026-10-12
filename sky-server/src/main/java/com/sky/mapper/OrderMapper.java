@@ -6,6 +6,7 @@ import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.entity.Orders;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -80,4 +81,13 @@ public interface OrderMapper {
      * @return 订单列表
      */
     List<GoodsSalesDTO> getSalesTop10(LocalDateTime begin,LocalDateTime end);
+
+    /**
+     * 根据订单状态更新订单
+     * @param orders 订单
+     * @param expectedStatus 期望状态
+     * @return 受影响的行数
+     */
+    int updateStatusWithExpected(@Param("orders") Orders orders, @Param("expectedStatus") Integer expectedStatus);
+
 }
