@@ -38,7 +38,7 @@ public class DishServiceImpl implements DishService {
     private SetmealDishMapper setmealDishMapper;
     /**
      * 新增菜品和对应的口味
-     * @param dishDTO
+     * @param dishDTO 菜品和口味数据
      */
     @Override
     @Transactional // 声明式事务管理
@@ -63,8 +63,8 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 菜品分页查询
-     * @param dishPageQueryDTO
-     * @return
+     * @param dishPageQueryDTO 菜品分页查询条件
+     * @return 菜品分页查询结果
      */
     @Override
     public PageResult pageQuery(DishPageQueryDTO dishPageQueryDTO) {
@@ -75,7 +75,7 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 菜品批量删除
-     * @param ids
+      * @param ids 菜品id列表
      */
     @Transactional // 声明式事务管理
     @Override
@@ -106,8 +106,8 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 根据id查询菜品和对应的口味数据
-     * @param id
-     * @return
+      * @param id 菜品id
+      * @return 菜品和对应的口味数据
      */
     @Override
     public DishVO getByIdWithFlavor(Long id) {
@@ -127,7 +127,7 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 根据id更新菜品和对应的口味数据
-     * @param dishDTO
+      * @param dishDTO 菜品和口味数据
      */
     @Override
     public void updateWithFlavor(DishDTO dishDTO) {
@@ -152,8 +152,8 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 根据分类id查询菜品
-     * @param categoryId
-     * @return
+      * @param categoryId 分类id
+      * @return 菜品列表
      */
     @Override
     public List<Dish> list(Long categoryId) {
@@ -166,8 +166,8 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 条件查询菜品和口味
-     * @param dish
-     * @return
+      * @param dish 菜品和口味查询条件
+     * @return 菜品和口味数据
      */
     public List<DishVO> listWithFlavor(Dish dish) {
         List<Dish> dishList = dishMapper.list(dish);
@@ -189,8 +189,8 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 起售或停用菜品
-     * @param status
-     * @param id
+      * @param status 菜品状态
+      * @param id 菜品id
      */
     @Override
     public void startOrStop(Integer status, Long id) {
