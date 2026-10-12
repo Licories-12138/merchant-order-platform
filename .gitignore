@@ -2,6 +2,6 @@
 .idea
 *.iml
 *.class
-*Test.java
-**/test/
 **/application-dev.yml
+# 课程模板自带的测试类，不纳入版本管理
+sky-server/src/test/java/com/sky/test/
